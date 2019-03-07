@@ -38,7 +38,6 @@ public class CurrencyExchangeRate implements ExchangeRate {
 	@Autowired
 	private ExchangeRateDao exchangeRateDao;
 
-//	@Cacheable("exchangeRates") // exchangeRates is the cache name
 	public void fetchExchangeRates() {
 		LOG.info("Refreshing Exchange rates cache.");
 		evictExchangeRatesCache();
@@ -64,10 +63,7 @@ public class CurrencyExchangeRate implements ExchangeRate {
 		exchangeRateCache.put(key, value);
 	}
 
-//	@Scheduled(fixedDelay = 60 * 60 * 1000) // 1 hour
-//	@CacheEvict(cacheNames = "exchangeRates", allEntries = true)
 	public void evictExchangeRatesCache() {
-		// no code is needed here if annotation base evict implemented
 		LOG.info("Evict Exchange Rates, to refresh cache.");
 		exchangeRateCache.clear();
 	}

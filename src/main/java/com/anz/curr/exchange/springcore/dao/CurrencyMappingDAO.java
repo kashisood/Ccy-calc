@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import com.anz.curr.exchange.springcore.Messages;
+
 @Component
 public class CurrencyMappingDAO {
 
@@ -16,10 +18,10 @@ public class CurrencyMappingDAO {
 
 	public Map<String, String> fetchCurrencyMapping() {
 
-		return jdbcTemplate.query("SELECT BASE_ID, TERM_ID, MAPPING_VALUE FROM CURRENCY_MATRIX", (ResultSet rs) -> {
+		return jdbcTemplate.query(Messages.getString("CcyMapSQL"), (ResultSet rs) -> { //$NON-NLS-1$
 			HashMap<String, String> results = new HashMap<>();
 			while (rs.next()) {
-				results.put(rs.getString("BASE_ID") + rs.getString("TERM_ID"), rs.getString("MAPPING_VALUE"));
+				results.put(rs.getString(Messages.getString("CcyMapBase_ID")) + rs.getString(Messages.getString("CcyMapTerm_ID")), rs.getString(Messages.getString("CcyMapValue"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
 			return results;
 		});

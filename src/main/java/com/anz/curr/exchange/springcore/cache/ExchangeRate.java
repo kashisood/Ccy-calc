@@ -1,10 +1,8 @@
 package com.anz.curr.exchange.springcore.cache;
 
-import java.util.Map;
+import java.math.BigDecimal;
 
 public interface ExchangeRate {
-
-	//Map<String, Double> findExchangeRates();
 
 	Double findExchangeRate(String fromToCcy);
 

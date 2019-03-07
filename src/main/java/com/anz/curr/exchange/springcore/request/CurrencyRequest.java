@@ -2,13 +2,10 @@ package com.anz.curr.exchange.springcore.request;
 
 import java.util.Currency;
 
-import org.springframework.stereotype.Component;
-
 /**
  * @author Krishma
  *
  */
-@Component("ccyReq")
 public class CurrencyRequest {
 
 	private Currency ccyFrom;
@@ -20,6 +17,7 @@ public class CurrencyRequest {
 	 * @param ccyTo
 	 * @param amount
 	 */
+	// @Autowired
 	public CurrencyRequest(Currency ccyFrom, Currency ccyTo, Float amount) {
 		super();
 		this.ccyFrom = ccyFrom;
@@ -30,6 +28,7 @@ public class CurrencyRequest {
 	public CurrencyRequest() {
 		super();
 	}
+
 	/**
 	 * @return the ccyFrom
 	 */

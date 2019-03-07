@@ -20,12 +20,12 @@ public class CurrencyExchangeMappingCache implements ApplicationRunner {
 
 	private CurrencyMappingDAO currencyMappingDAO;
 
-	@Autowired
-	ExchangeRate currencyExchangeRate; // currency default exchange rate mapping cache
+	private ExchangeRate currencyExchangeRate; // currency default exchange rate mapping cache
 
 	@Autowired
-	public CurrencyExchangeMappingCache(CurrencyMappingDAO currencyMappingDAO) {
+	public CurrencyExchangeMappingCache(CurrencyMappingDAO currencyMappingDAO, ExchangeRate currencyExchangeRate) {
 		this.currencyMappingDAO = currencyMappingDAO;
+		this.currencyExchangeRate = currencyExchangeRate;
 	}
 
 	public void run(ApplicationArguments args) {
@@ -39,7 +39,6 @@ public class CurrencyExchangeMappingCache implements ApplicationRunner {
 
 	// recursive call
 	public Double deriveExchangeRate(String fromCcy, String toCcy) {
-		// currencyMappingDAO.findCurrencyMappingPath(fromCcy, toCcy);
 		Boolean inverse = false;
 		String str = findExchangeMapping(fromCcy + toCcy);
 		if (str == null) {
@@ -62,7 +61,7 @@ public class CurrencyExchangeMappingCache implements ApplicationRunner {
 			try {
 				return 1 / (deriveExchangeRate(toCcy, str) * deriveExchangeRate(str, fromCcy));
 			} catch (Exception e) {
-				// in case of missing entries in database..
+				// in case of missing entries in database..?? 
 				// the deriveexchangeRate can throw null and 1/null can throw exception
 				return null;
 			}

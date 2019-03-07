@@ -14,30 +14,37 @@ import com.anz.curr.exchange.springcore.request.CurrencyRequest;
 @Component("currencyProcessor")
 public class CurrencyProcessor implements Processor<CurrencyRequest> {
 
-	// @Autowired
-	ResponseObject respObj;
+	// currency exchange rate mapping cache
+	private ExchangeRate currencyExchangeRate;
+	// currency exchange rate derived from matrix cache
+	private CurrencyExchangeMappingCache currencyExchangeMappingCache;
 
+	/**
+	 * @param currencyExchangeRate
+	 * @param currencyExchangeMappingCache
+	 */
 	@Autowired
-	ExchangeRate currencyExchangeRate; // currency exchange rate mapping cache
-
-	@Autowired
-	CurrencyExchangeMappingCache currencyExchangeMappingCache; // currency exchange rate derived from matrix cache
+	public CurrencyProcessor(ExchangeRate currencyExchangeRate,
+			CurrencyExchangeMappingCache currencyExchangeMappingCache) {
+		super();
+		this.currencyExchangeRate = currencyExchangeRate;
+		this.currencyExchangeMappingCache = currencyExchangeMappingCache;
+	}
 
 	@Override
-	public ResponseObject process(CurrencyRequest t1) {
+	public ResponseObject process(CurrencyRequest curReq) {
 
-		String ccyFrom = t1.getCcyFrom().getCurrencyCode();
-		String ccyTo = t1.getCcyTo().getCurrencyCode();
+		ResponseObject respObj = null;
+		String ccyFrom = curReq.getCcyFrom().getCurrencyCode();
+		String ccyTo = curReq.getCcyTo().getCurrencyCode();
 		String ccyCodeKey = ccyFrom + ccyTo;
-		respObj = new ResponseObject();
 		// check if value is available in local cache
 		Double rate = null;
 		if (ccyFrom.equalsIgnoreCase(ccyTo)) {
 			rate = 1.0;
 		} else {
-			currencyExchangeRate.findExchangeRate(ccyCodeKey);
+			rate = currencyExchangeRate.findExchangeRate(ccyCodeKey);
 		}
-		Double tempResp;
 		if (rate == null) {
 			// find if inverse exchange rate exists in local cache
 			rate = currencyExchangeRate.findInverseExchangeRate(ccyTo + ccyFrom);
@@ -50,15 +57,21 @@ public class CurrencyProcessor implements Processor<CurrencyRequest> {
 				currencyExchangeRate.put(ccyCodeKey, rate);
 			}
 		}
-		// if rate found from either local cache or derived from matrix then rate is not
-		// null
+		respObj = calcAmount(curReq, rate);
+		return respObj;
+	}
+
+	protected ResponseObject calcAmount(CurrencyRequest curReq, Double rate) {
+		ResponseObject respObj = new ResponseObject();
+		// if rate found from local cache or derived from matrix then rate not null
 		if (rate != null) {
-			tempResp = rate * t1.getAmount();
-			BigDecimal bigd = new BigDecimal(tempResp).setScale(t1.getCcyTo().getDefaultFractionDigits(),
+			Double tempResp = rate * curReq.getAmount();
+			BigDecimal bigd = new BigDecimal(tempResp).setScale(curReq.getCcyTo().getDefaultFractionDigits(),
 					RoundingMode.HALF_UP);
 			respObj.setStatus(true);
 			respObj.setRespObj(bigd.toString());
 		}
 		return respObj;
 	}
+
 }
