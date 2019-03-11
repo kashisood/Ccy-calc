@@ -35,34 +35,32 @@ public class App {
 
 	public void calculate() {
 		Scanner scanner = new Scanner(System.in);
-		String input = ""; //$NON-NLS-1$
+		String input = "";
 
-		do {
+		while (!input.equalsIgnoreCase(Messages.getString("App.exit"))) {
 			input = scanner.nextLine();
-			String[] inputParsed = input.trim().toUpperCase().split(" "); //$NON-NLS-1$
-			if (input.equalsIgnoreCase(Messages.getString("App.exit"))) { //$NON-NLS-1$
-				LOG.info(Messages.getString("App.exitMessage")); //$NON-NLS-1$
+
+			String[] inputParsed = input.trim().toUpperCase().split(" ");
+			if (input.equalsIgnoreCase(Messages.getString("App.exit"))) {
+				LOG.info(Messages.getString("App.exitMessage"));
 				continue;
 			} else if (inputParsed.length != 4) {
-				LOG.info(Messages.getString("App.invalidArgs")); //$NON-NLS-1$
+				LOG.info(Messages.getString("App.invalidArgs"));
 				continue;
 			}
 			// validate and process the input
 			Optional<CurrencyRequest> ccyReq = validateInput(inputParsed);
 
 			if (!ccyReq.isPresent()) {
-				LOG.info(Messages.getString("App.invalidInput") + inputParsed[0] + "/" + inputParsed[3] + " - " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				LOG.info(Messages.getString("App.invalidInput") + inputParsed[0] + "/" + inputParsed[3] + " - "
 						+ inputParsed[1]);
 			} else {
 				// no validation error, process the request
 				String result = process(ccyReq.get());
 				displayResult(ccyReq.get(), result);
 			}
-
-		} while (!input.equalsIgnoreCase(Messages.getString("App.exit"))); //$NON-NLS-1$
-
+		}
 		scanner.close();
-
 	}
 
 	/**
@@ -70,12 +68,12 @@ public class App {
 	 * @param result
 	 */
 	protected void displayResult(CurrencyRequest ccyReq, String result) {
-		if (Messages.getString("App.Rate_mapping_validation").equalsIgnoreCase(result)) { //$NON-NLS-1$
-			LOG.info(Messages.getString("App.Missing_rate") + ccyReq.getCcyFrom().getCurrencyCode() + "/" //$NON-NLS-1$ //$NON-NLS-2$
+		if (Messages.getString("App.Rate_mapping_validation").equalsIgnoreCase(result)) {
+			LOG.info(Messages.getString("App.Missing_rate") + ccyReq.getCcyFrom().getCurrencyCode() + "/"
 					+ ccyReq.getCcyTo().getCurrencyCode());
 		} else {
-			LOG.info(ccyReq.getCcyFrom().getCurrencyCode() + " " + ccyReq.getAmount() + " = " //$NON-NLS-1$ //$NON-NLS-2$
-					+ ccyReq.getCcyTo().getCurrencyCode() + " " + result); //$NON-NLS-1$
+			LOG.info(ccyReq.getCcyFrom().getCurrencyCode() + " " + ccyReq.getAmount() + " = "
+					+ ccyReq.getCcyTo().getCurrencyCode() + " " + result);
 		}
 	}
 

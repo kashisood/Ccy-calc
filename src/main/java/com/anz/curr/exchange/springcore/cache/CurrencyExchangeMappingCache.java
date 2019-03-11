@@ -3,8 +3,6 @@ package com.anz.curr.exchange.springcore.cache;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -15,7 +13,6 @@ import com.anz.curr.exchange.springcore.dao.CurrencyMappingDAO;
 @Service
 public class CurrencyExchangeMappingCache implements ApplicationRunner {
 
-	private static Logger LOG = LoggerFactory.getLogger(CurrencyExchangeMappingCache.class);
 	private static final Map<String, String> ccyExchangeMatrixCache = new ConcurrentHashMap<String, String>();
 
 	private CurrencyMappingDAO currencyMappingDAO;

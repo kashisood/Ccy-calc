@@ -13,8 +13,6 @@ import com.anz.curr.exchange.springcore.Messages;
 @Component
 public class ExchangeRateDao {
 
-	private static Map<String, Double> rateMap = null;
-
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
