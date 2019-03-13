@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30">
+	<Properties>
+		<Property name="LOG_PATTERN">
+			%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${hostName}
+			--- [%15.15t] %-40.40c{1.} : %m%n%ex
+		</Property>
+	</Properties>
+	<Appenders>
+		<Console name="ConsoleAppender" target="SYSTEM_OUT"
+			follow="true">
+			<PatternLayout pattern="${LOG_PATTERN}" />
+		</Console>
+		<!-- Rolling File Appender -->
+		<RollingFile name="FileAppender"
+			fileName="logs/log4j2-demo.log"
+			filePattern="logs/log4j2-demo-%d{yyyy-MM-dd}-%i.log">
+			<PatternLayout>
+				<Pattern>${LOG_PATTERN}</Pattern>
+			</PatternLayout>
+			<Policies>
+				<SizeBasedTriggeringPolicy size="10MB" /> <!-- roll files over when the size reaches 10MB -->
+				<TimeBasedTriggeringPolicy interval="1" /> <!-- roll files everyday -->
+			</Policies>
+			<DefaultRolloverStrategy max="10" /> <!-- the maximum number of log files that will be kept. -->
+		</RollingFile>
+		<!-- SMTP Appender -->
+		<!-- make your gmail account open to less secure apps to activate email 
+			sending to your email in case of any error using below link https://www.google.com/settings/security/lesssecureapps -->
+		<SMTP name="MailAppender" subject="Log4j2 Demo [PROD]"
+			SMTPProtocol="smtps" to="krishma.sood@gmail.com"
+			from="krishma.sood@gmail.com" smtpHost="smtp.gmail.com"
+			smtpPort="465" smtpUsername="krishma.sood@gmail.com"
+			smtpPassword="testtest123" bufferSize="1">
+			<ThresholdFilter level="ERROR" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout>
+				<Pattern>${LOG_PATTERN}</Pattern>
+			</PatternLayout>
+		</SMTP>
+	</Appenders>
+	<Loggers>
+		<!-- Application Specific logs in Asynchronous mode -->
+		<AsyncLogger name="com.anz.curr.exchange" level="debug"
+			additivity="false">
+			<AppenderRef ref="ConsoleAppender" />
+			<AppenderRef ref="FileAppender" />
+			<AppenderRef ref="MailAppender" />
+		</AsyncLogger>
+
+		<!-- Application Specific logs in synchronous mode -->
+<!-- 		<Logger name="com.anz.curr.exchange" level="debug" -->
+<!-- 			additivity="false"> -->
+<!-- 			<AppenderRef ref="ConsoleAppender" /> -->
+<!-- 		</Logger> -->
+
+		<Root level="trace">
+			<AppenderRef ref="ConsoleAppender" />
+			<AppenderRef ref="FileAppender" />
+			<AppenderRef ref="MailAppender" />
+		</Root>
+	</Loggers>
+</Configuration>
