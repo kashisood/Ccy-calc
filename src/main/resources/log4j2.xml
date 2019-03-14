@@ -45,19 +45,20 @@
 			additivity="false">
 			<AppenderRef ref="ConsoleAppender" />
 			<AppenderRef ref="FileAppender" />
-			<AppenderRef ref="MailAppender" />
+			<!-- <AppenderRef ref="MailAppender" /> -->
 		</AsyncLogger>
 
 		<!-- Application Specific logs in synchronous mode -->
-<!-- 		<Logger name="com.anz.curr.exchange" level="debug" -->
-<!-- 			additivity="false"> -->
-<!-- 			<AppenderRef ref="ConsoleAppender" /> -->
-<!-- 		</Logger> -->
+		<!-- <Logger name="com.anz.curr.exchange" level="debug" -->
+		<!-- additivity="false"> -->
+		<!-- <AppenderRef ref="ConsoleAppender" /> -->
+		<!-- </Logger> -->
 
-		<Root level="trace">
+		<!-- <Root level="trace"> -->
+		<Root level="info">
 			<AppenderRef ref="ConsoleAppender" />
 			<AppenderRef ref="FileAppender" />
-			<AppenderRef ref="MailAppender" />
+			<!-- <AppenderRef ref="MailAppender" /> -->
 		</Root>
 	</Loggers>
 </Configuration>
