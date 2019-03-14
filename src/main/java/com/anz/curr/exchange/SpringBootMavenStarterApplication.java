@@ -16,10 +16,10 @@ import com.anz.curr.exchange.springcore.App;
 @EnableCaching
 public class SpringBootMavenStarterApplication implements CommandLineRunner {
 
-	//private static Logger LOG = LoggerFactory.getLogger(SpringBootMavenStarterApplication.class);
+	// private static Logger LOG =
+	// LoggerFactory.getLogger(SpringBootMavenStarterApplication.class);
 	private static final Logger logger = LogManager.getLogger(SpringBootMavenStarterApplication.class);
 
-	
 	@Autowired
 	private App app;
 
@@ -31,12 +31,7 @@ public class SpringBootMavenStarterApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) {
-		  logger.debug("Debugging log");
-	        logger.info("Info log");
-	        logger.warn("Hey, This is a warning!");
-	        logger.error("Oops! We have an Error. OK");
-	        logger.fatal("Damn! Fatal error. Please fix me.");
-	        logger.info("EXECUTING : command line runner");
+		logger.info("EXECUTING : command line runner");
 		app.calculate();
 	}
 }
